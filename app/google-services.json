@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "923500391747",
+    "firebase_url": "https://notes-app-zs-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "notes-app-zs",
+    "storage_bucket": "notes-app-zs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923500391747:android:308357bd9aae98e1e353f6",
+        "android_client_info": {
+          "package_name": "com.zerdasoftware.notesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923500391747-e6a8liiuo5tekkqt4voqnt5hcjnqcl44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9aeglM-jA6QvtvnO5LMdY4PjkRB_HA1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923500391747-e6a8liiuo5tekkqt4voqnt5hcjnqcl44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

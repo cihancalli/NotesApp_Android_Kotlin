@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.*
 import com.zerdasoftware.notesapp.Models.NotesModel
 import com.zerdasoftware.notesapp.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -12,31 +13,28 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var notesList: ArrayList<NotesModel>
     private lateinit var adapter: NotesAdapter
+    private lateinit var refNotes: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         toolbar.title = "Notes APP"
-        toolbar.subtitle = "Ortalama : 60"
         setSupportActionBar(toolbar)
 
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(this)
 
+        val db = FirebaseDatabase.getInstance()
+        refNotes = db.getReference("notes")
+
         notesList = ArrayList( )
-
-        val n1 = NotesModel(1,"History",50,70)
-        val n2 = NotesModel(2,"Mathematics",40,80)
-        val n3 = NotesModel(3,"Chemistry",60,60)
-
-        notesList.add(n1)
-        notesList.add(n2)
-        notesList.add(n3)
 
         adapter = NotesAdapter(this,notesList)
 
         rv.adapter = adapter
+
+        AllNotes()
 
         fab.setOnClickListener {
             startActivity(Intent(this@MainActivity,NoteSaveActivity::class.java))
@@ -49,5 +47,29 @@ class MainActivity : AppCompatActivity() {
         intent.addCategory(Intent.CATEGORY_HOME)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+    fun AllNotes(){
+        refNotes.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(d: DataSnapshot) {
+                notesList.clear()
+                var total = 0
+                for (c in d.children){
+                    val note = c.getValue(NotesModel::class.java)
+                    if (note != null){
+                        note.note_id = c.key
+                        notesList.add(note)
+                        total = total + (note.note1!! + note.note2!!)/2
+                    }
+                }
+                adapter.notifyDataSetChanged()
+
+                if (total != 0){
+                    toolbar.subtitle = "Ortalama : ${total/notesList.size}"
+                }
+            }
+            override fun onCancelled(e: DatabaseError) {
+
+            }
+        })
     }
 }
